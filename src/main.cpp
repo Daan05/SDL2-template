@@ -2,43 +2,45 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-int main(int argv, char** args)
+#include "application.h"
+#include "events.h"
+
+// Main function
+int main(int argv, char* args[])
 {
-    SDL_Init(SDL_INIT_EVERYTHING);
+    // Application class, renders the game
+    Application app("Hello SDL");
 
-    SDL_Window *window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+    // Events class, handles the events
+    Events events(&app);
 
-    bool isRunning = true;
-    SDL_Event event;
+    int timer = 0;
 
-    while (isRunning)
+    // Game looop
+    while (!app.quit)
     {
-        while (SDL_PollEvent(&event))
+        // Start timer
+        timer = (int) SDL_GetTicks64();
+
+        // Check events
+        events.GetEvents();
+        // Handle the events
+        events.HandleEvents();
+        
+        // Clear the screen
+        app.ClearScreen();
+        // Render stuff on screen
+        app.Render();
+        // Update
+        app.Update();
+
+        // Framerate ~60
+        while (timer + 1000 / 60 > (int) SDL_GetTicks64())
         {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                isRunning = false;
-                break;
-
-            case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_ESCAPE)
-                {
-                    isRunning = false;
-                }
-            }
+            SDL_Delay(1);
         }
-
-        SDL_RenderClear(renderer);
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
-        SDL_RenderPresent(renderer);
     }
-
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+    // Exit
+    app.Exit();
     return 0;
 }
