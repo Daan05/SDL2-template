@@ -23,13 +23,13 @@ void Application::ClearScreen()
     SDL_RenderClear(renderer);
 }
 
-void Application::Render()
+void Application::Run()
 {
     player->HandleGravity();
     player->Render(renderer);
 }
 
-void Application::Update()
+void Application::UpdateScreen()
 {
     SDL_RenderPresent(renderer);
 }

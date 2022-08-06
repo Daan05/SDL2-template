@@ -13,8 +13,8 @@ public:
     ~Application();
 
     void ClearScreen();
-    void Render();
-    void Update();
+    void Run();
+    void UpdateScreen();
     
     void Exit();
 

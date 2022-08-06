@@ -30,9 +30,9 @@ int main(int argv, char* args[])
         // Clear the screen
         app.ClearScreen();
         // Render stuff on screen
-        app.Render();
+        app.Run();
         // Update
-        app.Update();
+        app.UpdateScreen();
 
         // Framerate ~60
         while (timer + 1000 / 60 > (int) SDL_GetTicks64())
